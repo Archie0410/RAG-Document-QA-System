@@ -1,4 +1,4 @@
-# RAG Backend — FastAPI + FAISS
+# RAG Document QA System (FastAPI + FAISS)
 
 A production-style backend system for document understanding using Retrieval-Augmented Generation (RAG), designed with hybrid retrieval, configurable precision-recall tuning, and observability.
 
@@ -232,3 +232,21 @@ Every query logs:
 - **Retrieval tuning** — Hybrid retrieval (keyword → vector → rerank) balances precision and recall. Raise `threshold` to tighten answers; lower `top_k` to reduce latency.
 - **Scaling** — For high-throughput ingestion, consider an async task queue (Celery, ARQ). Add authentication and rate limiting before exposing the API publicly.
 - **No API key** — The extractive fallback selects the highest-scoring retrieved chunk as the answer, so the system remains functional without OpenAI access.
+
+---
+
+## UI Screenshots
+
+Swagger overview:
+
+![Swagger Overview](test/results/screenshots/swagger_overview.png)
+
+`POST /query` execution with question:
+`What was the global CO2 concentration in 2023?`
+
+![Swagger Query CO2 Result](test/results/screenshots/swagger_query_co2_result.png)
+
+`POST /query` execution with question:
+`When was Romulus Augustulus deposed?`
+
+![Swagger Query Romulus Result](test/results/screenshots/swagger_query_romulus_result.png)
