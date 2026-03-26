@@ -1,13 +1,18 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
 export async function uploadPdf(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch(`${API_BASE_URL}/upload`, {
-    method: "POST",
-    body: formData,
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}/upload`, {
+      method: "POST",
+      body: formData,
+    });
+  } catch (error) {
+    throw new Error(`Failed to connect to backend at ${API_BASE_URL}.`);
+  }
   if (!response.ok) {
     const payload = await response.json().catch(() => ({}));
     throw new Error(payload.detail || "Upload failed.");
@@ -16,11 +21,16 @@ export async function uploadPdf(file) {
 }
 
 export async function askQuestion(question) {
-  const response = await fetch(`${API_BASE_URL}/query`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ question }),
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}/query`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+  } catch (error) {
+    throw new Error(`Failed to connect to backend at ${API_BASE_URL}.`);
+  }
   if (!response.ok) {
     const payload = await response.json().catch(() => ({}));
     throw new Error(payload.detail || "Query failed.");
